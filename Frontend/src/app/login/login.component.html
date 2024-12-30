@@ -1,0 +1,46 @@
+<div class="login-wrapper">
+    <div class="login-container">
+      <h2 class="login-title">Inicio de sesión</h2>
+  
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="form-group">
+          <label for="email" class="form-label">Correo electrónico</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="form-input"
+            [ngClass]="{ 'input-error': loginForm.controls['email'].invalid && loginForm.controls['email'].touched }"
+          />
+          <div *ngIf="(loginForm.controls['email'].touched || loginForm.controls['email'].dirty) && loginForm.controls['email'].invalid" class="error-message">
+            <small *ngIf="loginForm.controls['email'].errors?.['required']">El correo electrónico es obligatorio.</small>
+            <small *ngIf="loginForm.controls['email'].errors?.['email']">Por favor ingresa un correo válido.</small>
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="password" class="form-label">Contraseña</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            class="form-input"
+            [ngClass]="{ 'input-error': loginForm.controls['password'].invalid && loginForm.controls['password'].touched }"
+          />
+          <div *ngIf="(loginForm.controls['password'].touched || loginForm.controls['password'].dirty) && loginForm.controls['password'].invalid" class="error-message">
+            <small *ngIf="loginForm.controls['password'].errors?.['required']">La contraseña es obligatoria.</small>
+            <small *ngIf="loginForm.controls['password'].errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</small>
+          </div>
+        </div>
+  
+        <button type="submit" [disabled]="loginForm.invalid" class="submit-btn">
+          Iniciar sesión
+        </button>
+  
+        <div class="signup-link">
+          <p>No tienes cuenta? <a href="/signup">Regístrate aquí</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+  

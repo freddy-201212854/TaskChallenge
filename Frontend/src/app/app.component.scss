@@ -1,0 +1,39 @@
+.toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background-color: #ff6a00;
+    color: white;
+    font-weight: 600;
+    padding: 0 16px;
+  }
+  
+  .logout-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Alinea el botón a la derecha */
+    padding: 0 16px;   /* Añadimos un poco de espacio al lado del ícono */
+  }
+  
+  .logout-button .material-icons {
+    font-size: 28px;  /* Ajustamos el tamaño del ícono */
+  }
+  
+  .logout-button:hover {
+    opacity: 0.8;
+  }
+  
+  .material-icons {
+    font-size: 28px;
+    color: white; /* Aseguramos que el ícono sea blanco */
+  }
+  

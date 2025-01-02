@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from 'src/app/interface/user';
 import { SweetAlert } from '../../services/sweetAlertService';
+import { AuthService } from 'src/app/services/authservice';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,9 @@ export class LoginComponent {
   loginForm: FormGroup;  // FormGroup para almacenar los valores del formulario
 
   constructor(private fb: FormBuilder,
-              private sweetAlertService: SweetAlert
+              private sweetAlertService: SweetAlert,
+              private authService: AuthService,
+              private router: Router
   ) { 
     // Inicializamos el formulario con FormBuilder
     this.loginForm = this.fb.group({
@@ -30,14 +34,32 @@ export class LoginComponent {
       email: this.loginForm.get('email')?.value
     } 
 
-    this.sweetAlertService.showConfirmation('El usuario no existe', ' ¿ Desea regisrarlo ?')
-      .then((result) => {
-        if (result.isConfirmed) {
-          this.sweetAlertService.showSuccess('¡Usuario registrado!', 'Sesión iniciada');
-        } else {
-          this.sweetAlertService.showError('Cancelado', 'El usuario ingresado no existe');
-        }
-      });
+    this.authService.login(email).subscribe((response) => {
+      console.log(response);
+      if (response && response.token) {
+        // Si la respuesta contiene el token, lo guardamos y redirigimos
+        this.authService.saveToken(response.token);
+        this.router.navigate(['/task']);  // Redirige al dashboard u otra página
+      } else {
+        this.sweetAlertService.showConfirmation('El usuario no existe', ' ¿ Desea regisrarlo ?')
+       .then((result) => {
+         if (result.isConfirmed) {
+
+           this.authService.register(email).subscribe((response) => {
+              if (response.code == 200) {
+                this.sweetAlertService.showSuccess('¡Usuario registrado!', 'Sesión iniciada');
+                this.router.navigate(['/task']);  // Redirige al dashboard u otra página
+
+              } else {
+                this.sweetAlertService.showError('Error', response.error.message);
+              }
+           });  
+         } else {
+           this.sweetAlertService.showError('Cancelado', 'El usuario ingresado no existe');
+         }
+        });
+      }
+    });
   }
 
 }

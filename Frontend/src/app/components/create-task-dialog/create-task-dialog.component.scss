@@ -1,0 +1,135 @@
+// Estilo para el contenedor del modal
+.mat-dialog-container {
+    background-color: #ffffff;
+    padding: 30px; /* Padding general alrededor del contenido del modal */
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  // Título del modal
+  .modal-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #ff6a00;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 0 10px; /* Agregar algo de espacio a los lados */
+  }
+  
+  // Estilos del formulario
+  .task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Separación entre los campos */
+    padding: 0 10px; /* Agregar espacio a los lados del formulario */
+  }
+  
+  // Estilo de los campos de formulario
+  .form-field {
+    width: 100%;
+    
+    .custom-input {
+      background-color: #f0f0f0;
+      padding: 12px;
+      border-radius: 10px;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.05), -4px -4px 10px rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
+      
+      .mat-form-field-label {
+        color: #666;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+  
+      &:focus-within {
+        box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1), -4px -4px 15px rgba(255, 255, 255, 0.8);
+        .mat-form-field-label {
+          color: #ff6a00;
+        }
+        .mat-form-field-underline {
+          border-bottom: 2px solid #ff6a00;
+        }
+      }
+  
+      .mat-input-element,
+      .mat-textarea-autosize {
+        font-size: 16px;
+        padding: 12px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+  
+      .mat-error {
+        color: #ff6a00;
+        font-size: 14px;
+        margin-top: 8px;
+      }
+    }
+  }
+  
+  // Estilos para botones de acción
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px; /* Espacio entre el formulario y los botones */
+    padding: 0 10px; /* Espacio a los lados de los botones */
+  
+    .mat-button {
+      font-size: 16px;
+      padding: 10px 20px;
+      transition: background-color 0.3s ease;
+  
+      &.mat-flat-button {
+        background-color: #ff6a00;
+        color: #fff;
+        border-radius: 4px;
+  
+        &:hover {
+          background-color: #e65c00;
+        }
+  
+        &:disabled {
+          background-color: #ffb84d;
+          color: #fff;
+        }
+      }
+  
+      &:not(.mat-flat-button) {
+        color: #333;
+      }
+    }
+  }
+  
+  // Estilo para mat-radio-buttons
+  .mat-radio-button.mat-radio-checked {
+    color: #ff6a00;
+    &::before {
+      border-color: #ff6a00;
+    }
+  }
+  
+  // Estilo para el date picker
+  .mat-datepicker-toggle.mat-suffix {
+    color: #ff6a00;
+  }
+  
+  // Estilo para el contenedor de los radio buttons
+  .mat-radio-group {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  
+  // Estilo para los botones del modal (asegurando que no se peguen)
+  .mat-mdc-button:not(:disabled) {
+    background-color: #ff6a00;
+    color: white;
+  }
+  

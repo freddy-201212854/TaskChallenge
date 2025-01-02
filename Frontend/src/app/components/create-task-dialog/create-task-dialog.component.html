@@ -1,0 +1,37 @@
+<h2 mat-dialog-title class="modal-title"> {{ data.edit ===  false ? 'Crear nueva tarea' : 'Modificar tarea: ' + data.id  }}</h2>
+
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+  
+  <!-- Título -->
+  <mat-form-field class="form-field">
+    <mat-label>Título</mat-label>
+    <input matInput formControlName="title" placeholder="Ingresa el título de la tarea" />
+    <mat-error *ngIf="taskForm.get('title')?.hasError('required')">
+      El título es requerido.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Descripción -->
+  <mat-form-field class="form-field">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput formControlName="description" placeholder="Ingresa una breve descripción de la tarea"></textarea>
+    <mat-error *ngIf="taskForm.get('description')?.hasError('required')">
+      La descripción es requerida.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Estado -->
+  <mat-form-field class="form-field">
+    <mat-label>Estado</mat-label>
+    <mat-select formControlName="status">
+      <mat-option value="Pendiente">Pendiente</mat-option>
+      <mat-option value="Completada">Completada</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Acciones -->
+  <div mat-dialog-actions class="dialog-actions">
+    <button mat-button (click)="onCancel()" class="cancel-btn">Cancelar</button>
+    <button mat-button type="submit" [disabled]="taskForm.invalid">Guardar</button>
+  </div>
+</form>

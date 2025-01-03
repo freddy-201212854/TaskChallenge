@@ -15,7 +15,7 @@ export class SweetAlert {
         text: text,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#ff6a00',
         cancelButtonColor: '#d33',
         confirmButtonText: confirmButtonText,
         cancelButtonText: cancelButtonText
@@ -28,7 +28,7 @@ export class SweetAlert {
         title: title,
         text: text,
         icon: 'success',
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#ff6a00',
       });
     }
   
@@ -38,7 +38,7 @@ export class SweetAlert {
         title: title,
         text: text,
         icon: 'error',
-        confirmButtonColor: '#d33',
+        confirmButtonColor: '#ff6a00',
       });
     }
   

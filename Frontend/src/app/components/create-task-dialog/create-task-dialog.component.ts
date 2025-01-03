@@ -13,10 +13,8 @@ export class CreateTaskDialogComponent {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CreateTaskDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any // Se inyecta la data si es necesario
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    // Inicializando el formulario
-    console.log(data.edit);
     this.taskForm = this.fb.group({
       title: [data.edit ? data.task.title: '', [Validators.required]],
       description: [data.edit ? data.task.description: '', [Validators.required]],

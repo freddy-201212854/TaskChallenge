@@ -8,7 +8,7 @@ import {AuthGuardService as AuthGuard} from './services/Utility/auth-guard-servi
 const routes: Routes = [
   { path: 'login', component:LoginComponent }, // Ruta para el componente Login
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Ruta por defecto
-  { path: 'task', component: TaskComponent, /*canActivate: [AuthGuard]*/  }, // Ruta para el componente Task
+  { path: 'task', component: TaskComponent, canActivate: [AuthGuard] }, // Ruta para el componente Task
   { path: '**', redirectTo: '/login' },  // Ruta comodín para cualquier ruta desconocida
 
 ];

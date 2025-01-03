@@ -2,7 +2,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from '../../interface/user';
 import { environment } from '../../environment/environments';
@@ -24,7 +24,7 @@ export class AuthService {
       })
     );
   }
-
+  // Método para registrar un usuario
   register(user: User): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}users`, user).pipe(
       catchError(error => {
@@ -43,10 +43,18 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
-  // Método para verificar si el usuario está autenticado
-  isAuthenticated(): boolean {
-    const token = this.getToken();
-    return !!token; // Devuelve true si hay un token almacenado
+  // Método para verificar si el usuario está autenticado y utilizado en el canActivate
+  isAuthenticated(): Observable<any> {
+    return new Observable((observer: Observer<boolean>) => {
+      const token = this.getToken();
+      if (token) {
+        observer.next(true);
+        observer.complete();
+      } else {
+        observer.next(false);
+        observer.complete();
+      }
+    });
   }
 
   // Método para cerrar sesión

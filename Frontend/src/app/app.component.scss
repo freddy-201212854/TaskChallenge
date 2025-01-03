@@ -20,12 +20,12 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    margin-left: auto; /* Alinea el botón a la derecha */
-    padding: 0 16px;   /* Añadimos un poco de espacio al lado del ícono */
+    margin-left: auto;
+    padding: 0 16px;
   }
   
   .logout-button .material-icons {
-    font-size: 28px;  /* Ajustamos el tamaño del ícono */
+    font-size: 28px;
   }
   
   .logout-button:hover {
@@ -34,6 +34,5 @@
   
   .material-icons {
     font-size: 28px;
-    color: white; /* Aseguramos que el ícono sea blanco */
+    color: white; 
   }
-  

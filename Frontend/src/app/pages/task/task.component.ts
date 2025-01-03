@@ -19,7 +19,6 @@ export class TaskComponent implements OnInit, AfterViewInit{
   displayedColumns: string[] = [ 'Id', 'Título', 'Descripción', 'Fecha', 'Estado', 'Acción'];
   dataSource: MatTableDataSource<any>;
 
-  // Datos de ejemplo para la tabla
   tasks: Task [] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -58,15 +57,12 @@ export class TaskComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    // Asignar el paginador y el ordenamiento a la fuente de datos
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    // Asignar la propiedad `length` del paginador utilizando `dataSource.data.length`
     this.paginator.length = this.dataSource.data.length;
   }
   
-  // Método para eliminar un ítem
   deleteItem(item: Task): void {
     this.taskservice.deleteTask(item.id).subscribe((response) => {
       if (response && response.code == 200) {
@@ -81,21 +77,18 @@ export class TaskComponent implements OnInit, AfterViewInit{
     });
   }
 
-  // Método para abrir el modal
   openCreateTaskDialog(edit?: boolean, task?: Task) {
     
     const dialogRef = this.dialog.open(CreateTaskDialogComponent, {
-      width: '600px', // Puedes especificar el tamaño del modal
-      data: { // Aquí puedes pasar datos al modal si lo necesitas
+      width: '600px',
+      data: {
         task: task,
         edit: edit
       }
     });
 
-    // Acciones a realizar cuando el modal se cierra
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result, edit, task);
         if (result && !edit) {
           result.status = result.status == 'Pendiente' ? false: true;
           this.taskservice.createTask(result).subscribe((response) => {
@@ -123,8 +116,21 @@ export class TaskComponent implements OnInit, AfterViewInit{
             }
           });
         }       
+      }
+    });
+  }
+
+  UpdateTaskCheck(element: Task): void {
+
+    this.taskservice.updateTask(element, element.id).subscribe((response) => {
+      if (response && response.code == 200) {
+        this.getTask();
       } else {
-        console.log('El modal fue cerrado sin enviar datos.');
+        this.sweetAlertService.showError('Error', response.error.message);
+        if (response.error.code == 401) {
+          this.authservice.logout();
+          this.router.navigate(['/login']); 
+        }
       }
     });
   }

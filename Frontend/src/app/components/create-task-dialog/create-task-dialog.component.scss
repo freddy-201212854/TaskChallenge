@@ -1,7 +1,7 @@
 // Estilo para el contenedor del modal
 .mat-dialog-container {
     background-color: #ffffff;
-    padding: 30px; /* Padding general alrededor del contenido del modal */
+    padding: 30px;
     border-radius: 12px;
     max-width: 600px;
     width: 100%;
@@ -17,15 +17,15 @@
     color: #ff6a00;
     margin-bottom: 20px;
     text-align: center;
-    padding: 0 10px; /* Agregar algo de espacio a los lados */
+    padding: 0 10px;
   }
   
   // Estilos del formulario
   .task-form {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Separación entre los campos */
-    padding: 0 10px; /* Agregar espacio a los lados del formulario */
+    gap: 20px;
+    padding: 0 10px;
   }
   
   // Estilo de los campos de formulario
@@ -77,8 +77,8 @@
     display: flex;
     justify-content: flex-end;
     gap: 15px;
-    margin-top: 20px; /* Espacio entre el formulario y los botones */
-    padding: 0 10px; /* Espacio a los lados de los botones */
+    margin-top: 20px;
+    padding: 0 10px;
   
     .mat-button {
       font-size: 16px;
@@ -127,7 +127,7 @@
     justify-content: space-around;
   }
   
-  // Estilo para los botones del modal (asegurando que no se peguen)
+  // Estilo para los botones del modal
   .mat-mdc-button:not(:disabled) {
     background-color: #ff6a00;
     color: white;

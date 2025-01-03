@@ -12,14 +12,14 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-  loginForm: FormGroup;  // FormGroup para almacenar los valores del formulario
+  loginForm: FormGroup;
 
   constructor(private fb: FormBuilder,
               private sweetAlertService: SweetAlert,
               private authService: AuthService,
               private router: Router
   ) { 
-    // Inicializamos el formulario con FormBuilder
+    // Inicializamos el formulario
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],  // Campo de email
     });
@@ -27,7 +27,6 @@ export class LoginComponent {
 
   ngOnInit(): void {}
 
-  // Método que se ejecuta cuando se envía el formulario
   onSubmit(): void {
     
     const email: User = {
@@ -47,9 +46,8 @@ export class LoginComponent {
 
            this.authService.register(email).subscribe((response) => {
               if (response.code == 200) {
-                this.sweetAlertService.showSuccess('¡Usuario registrado!', 'Sesión iniciada');
+                this.authService.saveToken(response.token);
                 this.router.navigate(['/task']);  // Redirige al dashboard u otra página
-
               } else {
                 this.sweetAlertService.showError('Error', response.error.message);
                 this.authService.logout();

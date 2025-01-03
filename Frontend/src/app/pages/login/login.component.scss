@@ -1,47 +1,28 @@
-/* Fondo de la página con un gradiente vibrante */
-body {
-    background: linear-gradient(45deg, #ff6a00, #ee0979); /* Gradiente en tonos naranja y rosa */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    color: #333;
-    overflow: hidden; /* Previene el desplazamiento vertical */
-  }
-  
-  /* Contenedor principal */
+
   .login-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;  /* Esto es necesario para posicionar el formulario dentro de este contenedor */
     width: 100%;
-    height: 100%;
+    height: 100vh;  /* Asegura que ocupe toda la altura de la pantalla */
   }
-  
-  /* Estilos del contenedor del formulario */
+
+  //Estilos del contenedor del formulario
   .login-container {
-    background-color: #ffffff;
-    padding: 100px;
+    position: absolute;  /* Permite posicionar el formulario en relación con login-wrapper */
+    top: 50%;             /* Coloca el formulario en la mitad vertical del contenedor */
+    left: 50%;            /* Coloca el formulario en la mitad horizontal del contenedor */
+    transform: translate(-50%, -50%); /* Ajusta el formulario para que se centre completamente */
     width: 100%;
-    max-width: 380px;  /* Ancho máximo para pantallas grandes */
-    border-radius: 12px;
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    position: relative;
-    margin: 10px;
+    max-width: 400px; /* Limita el ancho máximo del formulario */
+    padding: 100px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
+
   
-  /* Hover effect on container */
-  .login-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Título del formulario */
+  // Título del formulario
   .login-title {
+    text-align: center;
     font-size: 28px;
     font-weight: bold;
     color: #333;
@@ -52,7 +33,7 @@ body {
     font-family: 'Poppins', sans-serif;
   }
   
-  /* Estilos generales para el formulario */
+  //Estilos generales para el formulario
   .login-form {
     display: flex;
     flex-direction: column;
@@ -63,7 +44,7 @@ body {
     text-align: left;
   }
   
-  /* Estilos para las etiquetas */
+  //Estilos para las etiquetas
   .form-label {
     font-size: 14px;
     font-weight: 600;
@@ -72,11 +53,10 @@ body {
     display: block;
   }
   
-  /* Estilo para los inputs */
+  // Estilo para los inputs
   .form-input {
     width: 100%;
     max-width: 100%;
-    //padding: 14px;
     padding-top: 14px;
     padding-bottom: 14px;
     border-radius: 8px;
@@ -88,7 +68,7 @@ body {
   }
   
   .form-input:focus {
-    border-color: #ff6a00; /* Borde de color vibrante */
+    border-color: #ff6a00;
     outline: none;
     box-shadow: 0 0 10px rgba(255, 106, 0, 0.3);
   }
@@ -102,14 +82,14 @@ body {
     box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
   }
   
-  /* Estilos de los mensajes de error */
+  // Estilos de los mensajes de error
   .error-message {
     color: #e74c3c;
     font-size: 12px;
     margin-top: 5px;
   }
   
-  /* Estilo del botón de submit */
+  // Estilo del botón de submit
   .submit-btn {
     background-color: #ff6a00;
     color: white;
@@ -119,10 +99,10 @@ body {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    width: 100%;  /* Asegura que el botón ocupe el ancho completo del contenedor */
-    max-width: 320px;  /* Limita el tamaño máximo para que no sea demasiado ancho */
-    margin: 0 auto;  /* Esto centra el botón horizontalmente */
-    display: block;  /* Asegura que el botón sea un bloque para centrarse */
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    display: block;
   }
   
   .submit-btn:hover {
@@ -134,38 +114,25 @@ body {
     background-color: #ccc;
     cursor: not-allowed;
   }
-  
-  /* Enlace para la página de registro */
-  .signup-link {
-    margin-top: 20px;
-    font-size: 14px;
-  }
-  
-  .signup-link a {
-    color: #ff6a00;
-    text-decoration: none;
-    font-weight: 600;
-  }
+
   
   .signup-link a:hover {
     text-decoration: underline;
   }
-  
-  /* --- MEDIA QUERIES: Responsive Design --- */
-  
-  /* Dispositivos móviles (menor a 600px) */
+    
+  // Dispositivos móviles
   @media (max-width: 600px) {
     .login-container {
       padding: 25px;
-      max-width: 90%;  /* Establecemos el máximo al 90% del ancho de la pantalla */
+      max-width: 90%;
     }
   
     .login-title {
-      font-size: 24px;  /* Reducir el tamaño del título */
+      font-size: 24px;
     }
   
     .form-input, .submit-btn {
-      font-size: 14px;  /* Reducir el tamaño de la fuente en dispositivos móviles */
+      font-size: 14px;
     }
   
     .submit-btn {
@@ -173,7 +140,7 @@ body {
     }
   }
   
-  /* Tablets y pantallas medianas (600px - 768px) */
+  // Tablets y pantallas medianas
   @media (min-width: 600px) and (max-width: 768px) {
     .login-container {
       padding: 30px;

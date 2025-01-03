@@ -302,14 +302,13 @@
   }
 </style>
 
-<!-- Toolbar -->
 <div class="toolbar" role="banner">
   <img src="assets/images/logo.png" alt="Logo" width="192" height="55" />
 
   <span>Task Challenge</span>
 
   <button *ngIf="getToken() != null" (click)="logout()" class="logout-button">
-    <span class="material-icons">exit_to_app</span> <!-- Icono de Cerrar Sesión -->
+    <span class="material-icons">exit_to_app</span>
   </button>
 </div>
 

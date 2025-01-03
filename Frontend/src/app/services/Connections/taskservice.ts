@@ -1,5 +1,3 @@
-// src/app/services/auth.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
@@ -26,13 +24,13 @@ export class TaskService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<any> {
-    return of(error);  // Retorna el error de forma observable
+    return of(error);
   }
 
   getTasks(): Observable<any> {
     const httpOptions = { headers: this.getHeaders() };
     return this.http.get<any>(`${this.apiUrl}tasks`, httpOptions).pipe(
-      catchError(this.handleError)  // Utilizamos el manejador de errores centralizado
+      catchError(this.handleError)
     );
   }
 
@@ -57,7 +55,6 @@ export class TaskService {
     );
   }
 
-  // Método para obtener el token desde el almacenamiento local
   private getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }

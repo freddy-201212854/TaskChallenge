@@ -1,95 +1,50 @@
-/* Estilo general para el contenedor de la tabla */
+// Estilo general para el contenedor de la tabla
 .mat-elevation-z8 {
-    margin: 20px; /* Espaciado alrededor de la tabla */
+    margin: 20px;
     padding: 10px;
     background-color: #fff;
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
-  /* Estilos para las celdas de la tabla */
+  // Estilos para las celdas de la tabla
   .mat-header-cell, .mat-cell {
     padding: 12px 16px;
-    text-align: left; /* Alineación de texto a la izquierda */
+    text-align: left; 
     font-size: 14px;
   }
   
-  /* Estilo para las cabeceras de las columnas */
+  // Estilo para las cabeceras de las columnas 
   .mat-header-cell {
-    background-color: #f5f5f5; /* Fondo gris claro para la cabecera */
-    color: #333; /* Texto oscuro */
+    background-color: #f5f5f5;
+    color: #333;
     font-weight: bold;
   }
+ 
   
-  /* Estilo para las filas impares (para mejorar la lectura) */
-  .mat-row:nth-child(odd) {
-    background-color: #fafafa;
-  }
-  
-  /* Estilo para las filas pares */
-  .mat-row:nth-child(even) {
-    background-color: #fff;
-  }
-  
-  /* Efecto al pasar el mouse sobre una fila */
-  .mat-row:hover {
-    background-color: #f1f1f1;
-    cursor: pointer;
-  }
-  
-  /* Estilo para el paginador */
+  // Estilo para el paginador
   .mat-paginator {
     margin-top: 16px;
     display: flex;
-    justify-content: flex-end; /* Alinear el paginador a la derecha */
+    justify-content: flex-end;
     padding: 10px;
   }
   
-  /* Estilo para los botones del paginador */
-  .mat-paginator .mat-button {
-    font-size: 14px;
-    color: #1976d2;
-  }
-  
-  .mat-paginator .mat-button:hover {
-    background-color: #e3f2fd;
-    border-radius: 4px;
-  }
-  
-  .mat-paginator-range-label {
-    font-size: 14px;
-    margin: 0 8px;
-    color: #555;
-  }
-  
-  .mat-paginator .mat-icon {
-    color: #1976d2;
-  }
-  
-  /* Estilo para el contenedor de la tabla cuando no hay datos */
-  .empty-table {
-    text-align: center;
-    font-size: 18px;
-    color: #888;
-    padding: 20px;
-    font-weight: 500;
-  }
-
-  /* Asegúrate de que el contenedor que rodea el botón ocupe todo el ancho disponible */
+  // Alinear boton de crear tarea a la derecha
 .table-header {
   display: flex;
-  justify-content: flex-end;  /* Alineamos el botón a la derecha */
-  width: 100%;  /* Asegura que el contenedor ocupe todo el ancho */
-  margin-bottom: 16px; /* Espacio debajo del botón */
-  padding: 0 16px; /* Espaciado a los lados */
+  justify-content: flex-end;  
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 0 16px;
 }
 
-/* Estilos para el botón Crear Tarea */
+ // Estilos para el botón Crear Tarea */
 button.mat-raised-button {
   display: flex;
-  align-items: center; /* Alineación vertical del icono y el texto */
+  align-items: center;
   font-size: 14px;
-  padding: 8px 16px; /* Espaciado del botón */
+  padding: 8px 16px;
 }
 
 .mat-mdc-raised-button:not(:disabled) {
@@ -97,14 +52,3 @@ button.mat-raised-button {
   color: white;
   margin-right: 10px;
 }
-
-button.mat-raised-button mat-icon {
-  margin-right: 8px; /* Espacio entre el icono y el texto */
-}
-
-/* Hover sobre el botón */
-button.mat-raised-button:hover {
-  background-color: #0056b3;  /* Color al pasar el ratón */
-}
-
-  

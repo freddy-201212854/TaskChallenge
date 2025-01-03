@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from '../../interface/user';
-import { environment } from '../../environment/environments';
+import { environment } from '../../environment/environment';
 import { Task } from 'src/app/interface/task';
 
 @Injectable({

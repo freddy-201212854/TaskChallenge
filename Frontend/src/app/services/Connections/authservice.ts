@@ -4,20 +4,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { User } from '../interface/user';
+import { User } from '../../interface/user';
+import { environment } from '../../environment/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000'; // URL de tu backend de autenticación
-  private tokenKey = 'auth_token'; // Clave para almacenar el token en localStorage
+  private apiUrl = environment.apiUrl;
+  private tokenKey = 'auth_token';
 
   constructor(private http: HttpClient) {}
 
   // Método para iniciar sesión
   login(user: User): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/users/${user.email}`).pipe(
+    return this.http.get<any>(`${this.apiUrl}users/${user.email}`).pipe(
       catchError(error => {
         return of(error);
       })
@@ -25,7 +26,7 @@ export class AuthService {
   }
 
   register(user: User): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/users`, user).pipe(
+    return this.http.post<any>(`${this.apiUrl}users`, user).pipe(
       catchError(error => {
         return of(error);
       })

@@ -2,7 +2,7 @@
 <div class="mat-elevation-z8">
     <!-- Contenedor para el botón Crear Tarea -->
     <div class="table-header">
-      <button mat-raised-button (click)="openCreateTaskDialog(0, false)">
+      <button mat-raised-button (click)="openCreateTaskDialog(false)">
         <mat-icon>add</mat-icon> Crear tarea
       </button>
     </div>
@@ -41,7 +41,7 @@
       <ng-container matColumnDef="Acción">
         <th mat-header-cell *matHeaderCellDef> Acción </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-icon-button (click)="openCreateTaskDialog(element.id, true)">
+          <button mat-icon-button (click)="openCreateTaskDialog(true, element)">
             <mat-icon>edit</mat-icon> <!-- Icono de editar -->
           </button>
           <button mat-icon-button (click)="deleteItem(element)">

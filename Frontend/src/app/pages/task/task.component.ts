@@ -5,6 +5,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Task } from 'src/app/interface/task';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateTaskDialogComponent } from 'src/app/components/create-task-dialog/create-task-dialog.component';
+import { TaskService } from 'src/app/services/Connections/taskservice';
+import { SweetAlert } from 'src/app/services/Utility/sweetAlertService';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/Connections/authservice';
 
 @Component({
   selector: 'app-task',
@@ -16,19 +20,42 @@ export class TaskComponent implements OnInit, AfterViewInit{
   dataSource: MatTableDataSource<any>;
 
   // Datos de ejemplo para la tabla
-  users: Task [] = [
-  { id: 1, title: 'Artículo 1', description: 'Descripción del artículo 1', dateCreated: '2024-01-01', status: true },
-  ];
-
+  tasks: Task [] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private dialog: MatDialog) {
-    // Configuración de la fuente de datos de la tabla
-    this.dataSource = new MatTableDataSource(this.users);
+  constructor(private dialog: MatDialog,
+              private taskservice: TaskService,
+              private authservice: AuthService,
+              private sweetAlertService: SweetAlert,
+              private router: Router
+  ) {
+    this.dataSource = new MatTableDataSource(this.tasks);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getTask()
+  }
+
+  getTask(): void {
+    this.tasks = [];
+
+    this.taskservice.getTasks().subscribe((response) => {
+      if (response && response.code == 200) {
+        this.tasks = response.list;
+        this.dataSource = new MatTableDataSource(this.tasks);
+
+      } else {
+        this.dataSource = new MatTableDataSource(this.tasks);
+
+        this.sweetAlertService.showError('Error', response.error.message);
+        if (response.error.code == 401) {
+          this.authservice.logout();
+          this.router.navigate(['/login']); 
+        }
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     // Asignar el paginador y el ordenamiento a la fuente de datos
@@ -41,17 +68,26 @@ export class TaskComponent implements OnInit, AfterViewInit{
   
   // Método para eliminar un ítem
   deleteItem(item: Task): void {
-    console.log('Eliminando el artículo:', item);
-      // Aquí puedes agregar la lógica para eliminar el artículo (ej. confirmación de eliminación)
+    this.taskservice.deleteTask(item.id).subscribe((response) => {
+      if (response && response.code == 200) {
+        this.getTask();
+      } else {
+        this.sweetAlertService.showError('Error', response.error.message);
+        if (response.error.code == 401) {
+          this.authservice.logout();
+          this.router.navigate(['/login']); 
+        }
+      }
+    });
   }
 
   // Método para abrir el modal
-  openCreateTaskDialog(id: Number = 0, edit: boolean=false) {
+  openCreateTaskDialog(edit?: boolean, task?: Task) {
     
     const dialogRef = this.dialog.open(CreateTaskDialogComponent, {
       width: '600px', // Puedes especificar el tamaño del modal
       data: { // Aquí puedes pasar datos al modal si lo necesitas
-        id: id,
+        task: task,
         edit: edit
       }
     });
@@ -59,7 +95,34 @@ export class TaskComponent implements OnInit, AfterViewInit{
     // Acciones a realizar cuando el modal se cierra
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Resultado del modal:', result);
+        console.log(result, edit, task);
+        if (result && !edit) {
+          result.status = result.status == 'Pendiente' ? false: true;
+          this.taskservice.createTask(result).subscribe((response) => {
+            if (response && response.code == 200) {
+              this.getTask();
+            } else {
+              this.sweetAlertService.showError('Error', response.error.message);
+              if (response.error.code == 401) {
+                this.authservice.logout();
+                this.router.navigate(['/login']); 
+              }
+            }
+          });
+        }else if (result && edit && task){
+          result.status = result.status == 'Pendiente' ? false: true;
+          this.taskservice.updateTask(result, task.id).subscribe((response) => {
+            if (response && response.code == 200) {
+              this.getTask();
+            } else {
+              this.sweetAlertService.showError('Error', response.error.message);
+              if (response.error.code == 401) {
+                this.authservice.logout();
+                this.router.navigate(['/login']); 
+              }
+            }
+          });
+        }       
       } else {
         console.log('El modal fue cerrado sin enviar datos.');
       }

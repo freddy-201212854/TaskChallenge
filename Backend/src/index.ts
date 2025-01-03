@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import * as admin from 'firebase-admin';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
+import { stat } from 'fs';
 
 // Inicializar Firebase Admin SDK
 const serviceAccount = require('../firebase-adminsdk.json');
@@ -23,15 +24,16 @@ const verifyToken = (req: any, res: any, next: NextFunction) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
   
   if (!token) {
-    return res.status(401).json({ code:401, error: 'Acceso no autorizado. Token no proporcionado.' });
+    return res.status(401).json({ code:401, message: 'Acceso no autorizado' });
   }
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
-    req.user = decoded; // Almacenamos los datos del usuario decodificados en el request
+    req.email = decoded; // Almacenamos los datos del usuario decodificados en el request
     next();
   } catch (error) {
-    return res.status(401).json({ code:401, error: 'Sesión expirada' });
+    console.log(error);
+    return res.status(401).json({ code:401, message: 'Sesión expirada' });
   }
 };
 
@@ -39,7 +41,7 @@ app.post('/users', async (req: Request, res: Response): Promise<any> => {
   const { email } = req.body;
 
   if (!email) {
-    return res.status(400).json({ code: 400, error: 'Faltan datos requeridos' });
+    return res.status(400).json({ code: 400, message: 'Faltan datos requeridos' });
   }
 
   try {
@@ -53,9 +55,9 @@ app.post('/users', async (req: Request, res: Response): Promise<any> => {
       expiresIn: '1h', // Expira en 1 hora
     });
 
-    return res.status(200).json({ code: 200, message: 'Usuario guardado correctamente' });
+    return res.status(200).json({ code: 200, message: 'Usuario guardado correctamente', token: token });
   } catch (error) {
-    return res.status(500).json({ code: 500, error: 'Hubo un error al guardar el usuario' });
+    return res.status(500).json({ code: 500, message: 'Hubo un error al guardar el usuario' });
   }
 });
 
@@ -67,7 +69,7 @@ app.get('/users/:email', async (req: Request, res: Response): Promise<any> => {
       const doc = await userRef.get();
   
       if (!doc.exists) {
-        return res.status(404).json({ code: 404, error: 'Usuario no encontrado' });
+        return res.status(404).json({ code: 404, message: 'Usuario no encontrado' });
       }
   
       // Devolver los datos del usuario
@@ -78,9 +80,9 @@ app.get('/users/:email', async (req: Request, res: Response): Promise<any> => {
         expiresIn: '1h', // Expira en 1 hora
       });
 
-      return res.status(200).json({ code: 200, message: 'Usuario registrado', userData, token: token });
+      return res.status(200).json({ code: 200, message: 'Usuario encontrado', userData, token: token });
     } catch (error) {
-      return res.status(500).json({ code: 500, error: 'Hubo un error al obtener el usuario' });
+      return res.status(500).json({ code: 500, message: 'Hubo un error al obtener el usuario' });
     }
   });
 
@@ -98,35 +100,39 @@ app.get('/users/:email', async (req: Request, res: Response): Promise<any> => {
 
       return res.status(200).json({ code:200, message: 'Lista de tareas obtenida correctamente', list });
     } catch (error) {
-      return res.status(500).json({ code: 500, error: 'Hubo un error al obtener las tareas' });
+      return res.status(500).json({ code: 500, message: 'Hubo un error al obtener las tareas' });
     }
   });
 
   app.post('/tasks', verifyToken, async (req: Request, res: Response): Promise<any> => {
-    const { title, description, dateCreated, status }: { title: string, description: string, dateCreated: string, status: boolean } = req.body;
-  
+    const { title, description, status }: { title: string, description: string, status: boolean } = req.body;
+    
     // Validar que los datos necesarios están presentes
     if (!title || !description || typeof status !== 'boolean') {
-      return res.status(400).json({ code: 400, error: 'Faltan datos requeridos o los datos son inválidos.' });
+      return res.status(400).json({ code: 400, message: 'Faltan datos requeridos o los datos son inválidos.' });
     }
   
     try {
       
       const tasksRef = db.collection('tasks');
-      const snapshot = await tasksRef.get();
-      const nextId = snapshot.size + 1;
+      const snapshot = await tasksRef.orderBy('id', 'desc').limit(1).get();
+
+
+      let nextId = 1;
+      if (!snapshot.empty) {
+        const largestTask = snapshot.docs[0].data();
+        nextId = largestTask.id + 1;
+      }
 
       const tarea = {
         id: nextId,
         title,
         description,
-        dateCreated: new Date().toLocaleDateString(),
+        dateCreated: new Date().toLocaleDateString('en-GB'),
         status,
       };
   
-      // Agregar la tarea a Firestore
       const newTaskRef = await tasksRef.add(tarea);
-  
 
       return res.status(200).json({ 
         code:200, 
@@ -134,20 +140,21 @@ app.get('/users/:email', async (req: Request, res: Response): Promise<any> => {
         id: nextId,
         title,
         description,
-        dateCreated,
+        dateCreated: new Date().toLocaleDateString('en-GB'),
         status,
       });
     } catch (error) {
-      return res.status(500).json({ code: 500, error: 'Hubo un error al crear la tarea.' });
+      return res.status(500).json({ code: 500, message: 'Hubo un error al crear la tarea.' });
     }
   });
 
   app.put('/tasks/:taskId', verifyToken, async (req: Request, res: Response): Promise<any> => {
     const { taskId } = req.params;
+    console.log(taskId);
     const { title, description, status }: { title: string, description: string, status: boolean } = req.body;
   
     if (!title && !description && status === undefined) {
-      return res.status(400).json({ error: 'No se proporcionaron datos válidos para actualizar.' });
+      return res.status(400).json({ code: 400, message: 'No se proporcionaron datos válidos para actualizar.' });
     }
   
     try {
@@ -156,15 +163,14 @@ app.get('/users/:email', async (req: Request, res: Response): Promise<any> => {
       const querySnapshot = await taskRef.where('id', '==', parseInt(taskId)).get();
 
       if (querySnapshot.empty) {
-        return res.status(404).json({ error: 'Tarea no encontrada.' });
+        return res.status(404).json({ code:404, message: 'Tarea no encontrada.' });
       }
   
       const taskDoc = querySnapshot.docs[0];
-      const taskData = taskDoc.data();
       const updatedTask: any = {
         title: title,
         description: description,
-        dateCreated: new Date().toLocaleDateString(),
+        dateCreated: new Date().toLocaleDateString('en-GB'),
         status: status,
       };
       
@@ -178,7 +184,7 @@ app.get('/users/:email', async (req: Request, res: Response): Promise<any> => {
         updatedFields: updatedTask,
       });
     } catch (error) {
-      return res.status(500).json({ error: 'Hubo un error al actualizar la tarea.' });
+      return res.status(500).json({ code:500, message: 'Hubo un error al actualizar la tarea.' });
     }
   });
   
@@ -190,7 +196,7 @@ app.get('/users/:email', async (req: Request, res: Response): Promise<any> => {
       const querySnapshot = await tasksRef.where('id', '==', parseInt(taskId)).get();
   
       if (querySnapshot.empty) {
-        return res.status(404).json({ error: 'Tarea no encontrada.' });
+        return res.status(404).json({ code: 404, message: 'Tarea no encontrada.' });
       }
   
       const taskDoc = querySnapshot.docs[0];
@@ -204,7 +210,7 @@ app.get('/users/:email', async (req: Request, res: Response): Promise<any> => {
         id: taskId,
       });
     } catch (error) {
-      return res.status(500).json({ error: 'Hubo un error al eliminar la tarea.' });
+      return res.status(500).json({ code: 500, message: 'Hubo un error al eliminar la tarea.' });
     }
   });
 

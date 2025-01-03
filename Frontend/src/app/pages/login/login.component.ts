@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from 'src/app/interface/user';
-import { SweetAlert } from '../../services/sweetAlertService';
-import { AuthService } from 'src/app/services/authservice';
+import { SweetAlert } from '../../services/Utility/sweetAlertService';
+import { AuthService } from 'src/app/services/Connections/authservice';
 import { Router } from '@angular/router';
 
 @Component({
@@ -52,6 +52,7 @@ export class LoginComponent {
 
               } else {
                 this.sweetAlertService.showError('Error', response.error.message);
+                this.authService.logout();
               }
            });  
          } else {

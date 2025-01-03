@@ -16,24 +16,21 @@ export class CreateTaskDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any // Se inyecta la data si es necesario
   ) {
     // Inicializando el formulario
+    console.log(data.edit);
     this.taskForm = this.fb.group({
-      title: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      title: [data.edit ? data.task.title: '', [Validators.required]],
+      description: [data.edit ? data.task.description: '', [Validators.required]],
       dateCreated: [new Date().toLocaleDateString(), [Validators.required]],
-      status: ['Activa', [Validators.required]]
+      status: [data.edit ? data.task.status ? 'Completada' : 'Pendiente' : '', [Validators.required]]
     });
   }
 
-  // Método para cerrar el modal y devolver los datos
-  onSubmit() {
-    console.log(this.data);
-    
+  onSubmit() {    
     if (this.taskForm.valid) {
       this.dialogRef.close(this.taskForm.value);
     }
   }
 
-  // Método para cerrar el modal sin devolver nada
   onCancel() {
     this.dialogRef.close();
   }
